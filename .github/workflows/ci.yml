@@ -22,13 +22,13 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore
-        run: dotnet restore src/EmployeeApi/EmployeeApi.csproj
+        run: dotnet restore EmployeeApi.sln
 
       - name: Build
-        run: dotnet build src/EmployeeApi/EmployeeApi.csproj --configuration Release --no-restore
+        run: dotnet build EmployeeApi.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test tests/EmployeeApi.Tests/EmployeeApi.Tests.csproj --configuration Release --no-build
+        run: dotnet test EmployeeApi.sln --configuration Release --no-build
 
   security-gates:
     runs-on: ubuntu-latest
