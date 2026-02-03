@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  employee-api:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-local}/employee-api:${IMAGE_TAG:-local}
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+    env_file:
+      - ./production.env
+    restart: unless-stopped

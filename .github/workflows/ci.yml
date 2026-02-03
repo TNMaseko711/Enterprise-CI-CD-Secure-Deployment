@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore src/EmployeeApi/EmployeeApi.csproj
+
+      - name: Build
+        run: dotnet build src/EmployeeApi/EmployeeApi.csproj --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test tests/EmployeeApi.Tests/EmployeeApi.Tests.csproj --configuration Release --no-build
+
+  security-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@v4
+
+      - name: Gitleaks scan
+        uses: gitleaks/gitleaks-action@v2
